@@ -1,0 +1,37 @@
+
+# Tool either VCF or JG
+tool:
+  default: VC-Formal
+  value: VC-Formal
+
+# Application mode for the Formal tool
+appmode:
+  default: FPV
+  value: 
+
+blackbox:
+
+read_file:
+  top:
+  format:
+  filelist:
+
+clock: 
+  name: 
+  period:
+    default: 100
+    value: 
+
+reset:
+  name: 
+  sense:
+    default: high
+    value:  
+
+# Run simulation and put design in to stable state
+# sim:
+
+check-mode: 
+  value: 
+
+
