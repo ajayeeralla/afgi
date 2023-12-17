@@ -1,0 +1,36 @@
+
+# Task name
+task: This task is used to run Formal Verification on the design.
+
+# Tool name
+tool: VC-Formal
+
+# Application mode for the Formal tool
+appmode: FPV
+
+blackbox:
+  modules:
+    - 1
+    - 2
+  cells:
+  
+read_file:
+  top:
+  format:
+  filelist:
+
+clock:
+  name: 
+  period:
+
+reset:
+  name: 
+  sense:
+   
+
+check-mode: 
+
+
+  
+
+

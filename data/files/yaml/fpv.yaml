@@ -1,5 +1,5 @@
 
-# Tool either VCF or JG
+# Tool name
 tool:
   default: VC-Formal
   value: VC-Formal
@@ -10,17 +10,18 @@ appmode:
   value: 
 
 blackbox:
-
+  modules:
+  cells:
+  
 read_file:
   top:
   format:
   filelist:
 
 clock: 
-  name: 
   period:
-    default: 100
-    value: 
+  default: 100
+  value: 
 
 reset:
   name: 
