@@ -1,19 +1,17 @@
 
-import load_yaml
+# import load_yaml
 import tcl_gen
 
 def main():
     """Main function for the yaml_to_tcl package.
     
     Examples:
-    
+        $ python3 -m yaml_to_tcl <input_file>
     
     """
     # Read the YAML file
-    dic = load_yaml.load_yaml_file(sys.argv[1])
-    
     # Translate the YAML file to TCL
-    tcl = tcl_gen.tcl_gen(dic)
+    tcl = tcl_gen.tcl_gen(sys.argv[1])
     
     # Print the TCL file
     print(tcl)

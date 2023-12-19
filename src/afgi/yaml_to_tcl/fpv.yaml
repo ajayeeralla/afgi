@@ -10,25 +10,30 @@ appmode: FPV
 
 blackbox:
   modules:
-    - 1
-    - 2
+    - add.v
+    - sub.v
   cells:
+    - add0
+    - sub0
   
 read_file:
-  top:
-  format:
-  filelist:
+  top: adder
+  format: verilog
+  filelist: 
+    - adder.v
+    - adder_tb.v
+    - mult.v
 
 clock:
-  name: 
-  period:
+  name: clk
+  period: 10
 
-reset:
-  name: 
-  sense:
+reset: 
+  name: rst 
+  sense: high
    
 
-check-mode: 
+check-mode: block
 
 
   
