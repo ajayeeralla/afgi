@@ -1,0 +1,21 @@
+site_name: AFGI Docs
+theme: 
+  name: "material"
+
+plugins:
+  - search
+  # - gen-files:
+  #     scripts:
+  #       - docs/gen_ref_pages.py
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [src]
+
+nav: 
+  - AFGI Docs: index.md
+  - Tutorial: tutorials.md
+  - How-to-Guides: how-to-guides.md
+  - explanation.md
+  - API Reference: reference.md

@@ -1,3 +1,5 @@
 [build-system]
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
+
+package-dir = {"afgi" = "src/afgi"}
