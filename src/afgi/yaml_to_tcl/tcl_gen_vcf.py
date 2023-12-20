@@ -58,7 +58,7 @@
   """
 
 import datetime
-from errors import YamlToTclErrorException, YamlToTclErrors
+from afgi.yaml_to_tcl.errors import YamlToTclErrorException, YamlToTclErrors
 
 
 def to_tcl_filelist(filelist):
@@ -76,7 +76,7 @@ def to_tcl_filelist(filelist):
     flist = flist + "}"
     return flist
 
-def tcl_gen (input_dic):
+def tcl_vcf (input_dic):
         """Generate TCL file (for VC Formal tool) from YAML configuration.
 
         Args:

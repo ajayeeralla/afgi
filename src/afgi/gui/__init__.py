@@ -3,4 +3,4 @@ GUI package for AFGI.
 
 """
 
-from .my_frame import MyFrame
+from afgi.gui.my_frame import MyFrame

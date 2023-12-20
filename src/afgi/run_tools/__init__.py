@@ -1,4 +1,4 @@
 """
 This package contains the scripts for running the FV tools.
 """
-from .run import RunTool
+from afgi.run_tools.run import RunTool

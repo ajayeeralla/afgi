@@ -1,5 +1,5 @@
 
-def tcl_gen(f):
+def tcl_jg(f):
     # with open(f'{filename}.yaml','r') as f:
         file = open("jg.tcl", "w+")
         l1 = "#! /usr/bin/tclsh"

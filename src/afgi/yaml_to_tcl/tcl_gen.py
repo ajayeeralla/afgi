@@ -1,9 +1,8 @@
-from errors import YamlToTclErrors, YamlToTclErrorException
 import os
-import tcl_gen_jg
-import tcl_gen_vcf
+from afgi.yaml_to_tcl.tcl_gen_jg import tcl_jg
+from afgi.yaml_to_tcl.tcl_gen_vcf import tcl_vcf 
+from afgi.yaml_to_tcl.errors import YamlToTclErrorException, YamlToTclErrors 
 import yaml
-
 
 def load_yaml_file(input_file):
     """Check if a YAML file is valid.
@@ -62,8 +61,8 @@ def tcl_gen(input_file):
         if tool == None:
             raise YamlToTclErrorException(yaml_exception.tool_error())
         if tool == 'VC-Formal':
-            return tcl_gen_vcf.tcl_gen(dic)
+            return tcl_vcf(dic)
         elif tool == 'JasperGold':
-            return tcl_gen_jg(dic)
+            return tcl_jg(dic)
         else: 
             raise YamlToTclErrorException(yaml_exception.tool_name_error())

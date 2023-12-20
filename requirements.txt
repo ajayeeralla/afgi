@@ -1,3 +1,4 @@
+-e git+ssh://git@github.com/ajayeeralla/afgi.git@edcfbf007911d732d582cdaab7e7e0304f96ff85#egg=afgi
 numpy==1.24.4
 Pillow==10.1.0
 PyYAML==6.0.1
