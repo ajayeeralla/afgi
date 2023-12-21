@@ -62,7 +62,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#afgi" class="md-skip">
+        <a href="#afgi.run_tools.run" class="md-skip">
           Skip to content
         </a>
       
@@ -313,11 +313,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#afgi" class="md-nav__link">
+  <a href="#afgi.run_tools.run" class="md-nav__link">
     <span class="md-ellipsis">
-      afgi
+      run
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#afgi.run_tools.run.RunTool" class="md-nav__link">
+    <span class="md-ellipsis">
+      RunTool
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RunTool">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#afgi.run_tools.run.RunTool.get_opts" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_opts()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#afgi.run_tools.run.RunTool.run" class="md-nav__link">
+    <span class="md-ellipsis">
+      run()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -354,11 +387,44 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#afgi" class="md-nav__link">
+  <a href="#afgi.run_tools.run" class="md-nav__link">
     <span class="md-ellipsis">
-      afgi
+      run
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#afgi.run_tools.run.RunTool" class="md-nav__link">
+    <span class="md-ellipsis">
+      RunTool
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RunTool">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#afgi.run_tools.run.RunTool.get_opts" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_opts()
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#afgi.run_tools.run.RunTool.run" class="md-nav__link">
+    <span class="md-ellipsis">
+      run()
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -383,10 +449,19 @@
 
 
 
-<a id="afgi"></a>
+<a id="afgi.run_tools.run"></a>
   <div class="doc doc-contents first">
   
-      <p>This is the main package for the AFGI project.</p>
+      <p>This module contains the RunTool class which is used to run any tool 
+with the given arguments
+class RunTool:
+    Attributes:
+        tool (str): tool name
+        script (str): script name
+        args (list strings): list of arguments
+    Methods:
+        get_opts(self): get the options of the tool
+        run(self): run formal verification tool on the given script</p>
 
   
 
@@ -398,6 +473,229 @@
 
 
 
+
+<div class="doc doc-object doc-class">
+
+
+
+
+<h2 id="afgi.run_tools.run.RunTool" class="doc doc-heading">
+          <code>RunTool</code>
+
+
+</h2>
+
+
+  <div class="doc doc-contents ">
+
+  
+      <p>RunTool class
+Attributes:
+    tool (str): tool name
+    script (str): script name
+    args (list strings): list of arguments</p>
+
+            <details class="quote">
+              <summary>Source code in <code>src/afgi/run_tools/run.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">RunTool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; RunTool class</span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        tool (str): tool name</span>
+<span class="sd">        script (str): script name</span>
+<span class="sd">        args (list strings): list of arguments</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tool</span><span class="p">,</span> <span class="n">script</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">=</span> <span class="n">tool</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">script</span> <span class="o">=</span> <span class="n">script</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">args</span>
+
+    <span class="k">def</span> <span class="nf">get_opts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">       </span><span class="sd">&quot;&quot;&quot;A method to get the options of the tool</span>
+<span class="sd">        Args:</span>
+<span class="sd">              None</span>
+<span class="sd">        Returns: </span>
+<span class="sd">            opts (str): tool options with prefix &#39;-&#39; if not present separated by space  </span>
+<span class="sd">       &quot;&quot;&quot;</span>
+       <span class="n">opts</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+       <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">arg</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">):</span>
+                <span class="n">opts</span> <span class="o">=</span> <span class="n">opts</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">arg</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">opts</span> <span class="o">=</span> <span class="n">opts</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span><span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">arg</span>
+       <span class="k">return</span> <span class="n">opts</span>
+
+    <span class="c1"># Run formal verification tool on the given script</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; A method to run a tool on the given script with the given arguments</span>
+<span class="sd">        Args:</span>
+<span class="sd">            None</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            output (str): output of the tool to the console</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># run tool</span>
+        <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_opts</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">script</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+            </details>
+
+  
+
+  <div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="afgi.run_tools.run.RunTool.get_opts" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">get_opts</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>A method to get the options of the tool
+Args:
+      None
+Returns: 
+    opts (str): tool options with prefix '-' if not present separated by space</p>
+
+          <details class="quote">
+            <summary>Source code in <code>src/afgi/run_tools/run.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_opts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">   </span><span class="sd">&quot;&quot;&quot;A method to get the options of the tool</span>
+<span class="sd">    Args:</span>
+<span class="sd">          None</span>
+<span class="sd">    Returns: </span>
+<span class="sd">        opts (str): tool options with prefix &#39;-&#39; if not present separated by space  </span>
+<span class="sd">   &quot;&quot;&quot;</span>
+   <span class="n">opts</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+   <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">arg</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">):</span>
+            <span class="n">opts</span> <span class="o">=</span> <span class="n">opts</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="n">arg</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">opts</span> <span class="o">=</span> <span class="n">opts</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span><span class="s1">&#39;-&#39;</span> <span class="o">+</span> <span class="n">arg</span>
+   <span class="k">return</span> <span class="n">opts</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+
+<h3 id="afgi.run_tools.run.RunTool.run" class="doc doc-heading">
+          <code class="highlight language-python"><span class="n">run</span><span class="p">()</span></code>
+
+</h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>A method to run a tool on the given script with the given arguments
+Args:
+    None
+Returns:
+    output (str): output of the tool to the console</p>
+
+          <details class="quote">
+            <summary>Source code in <code>src/afgi/run_tools/run.py</code></summary>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span>
+<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; A method to run a tool on the given script with the given arguments</span>
+<span class="sd">    Args:</span>
+<span class="sd">        None</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        output (str): output of the tool to the console</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># run tool</span>
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tool</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_opts</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39; &#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">script</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+          </details>
+  </div>
+
+</div>
+
+
+
+  </div>
+
+  </div>
+
+</div>
 
 
 
