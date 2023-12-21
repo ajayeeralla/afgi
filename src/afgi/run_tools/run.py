@@ -1,10 +1,12 @@
 """ This module contains the RunTool class which is used to run any tool 
 with the given arguments
+\b
 class RunTool:
     Attributes:
         tool (str): tool name
         script (str): script name
         args (list strings): list of arguments
+\b
     Methods:
         get_opts(self): get the options of the tool
         run(self): run formal verification tool on the given script
