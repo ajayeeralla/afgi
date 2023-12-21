@@ -454,11 +454,13 @@
   
       <p>This module contains the RunTool class which is used to run any tool 
 with the given arguments
+
 class RunTool:
     Attributes:
         tool (str): tool name
         script (str): script name
         args (list strings): list of arguments
+
     Methods:
         get_opts(self): get the options of the tool
         run(self): run formal verification tool on the given script</p>
@@ -497,9 +499,7 @@ Attributes:
 
             <details class="quote">
               <summary>Source code in <code>src/afgi/run_tools/run.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
 <span class="normal">20</span>
@@ -534,7 +534,9 @@ Attributes:
 <span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
-<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">RunTool</span><span class="p">:</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">RunTool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; RunTool class</span>
 <span class="sd">    Attributes:</span>
 <span class="sd">        tool (str): tool name</span>
@@ -609,9 +611,7 @@ Returns:
 
           <details class="quote">
             <summary>Source code in <code>src/afgi/run_tools/run.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
 <span class="normal">30</span>
 <span class="normal">31</span>
 <span class="normal">32</span>
@@ -622,7 +622,9 @@ Returns:
 <span class="normal">37</span>
 <span class="normal">38</span>
 <span class="normal">39</span>
-<span class="normal">40</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_opts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">get_opts</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">   </span><span class="sd">&quot;&quot;&quot;A method to get the options of the tool</span>
 <span class="sd">    Args:</span>
 <span class="sd">          None</span>
@@ -664,16 +666,16 @@ Returns:
 
           <details class="quote">
             <summary>Source code in <code>src/afgi/run_tools/run.py</code></summary>
-            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
+            <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">45</span>
 <span class="normal">46</span>
 <span class="normal">47</span>
 <span class="normal">48</span>
 <span class="normal">49</span>
 <span class="normal">50</span>
 <span class="normal">51</span>
-<span class="normal">52</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="normal">52</span>
+<span class="normal">53</span>
+<span class="normal">54</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; A method to run a tool on the given script with the given arguments</span>
 <span class="sd">    Args:</span>
 <span class="sd">        None</span>
