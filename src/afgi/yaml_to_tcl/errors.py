@@ -1,4 +1,5 @@
 """ This module contains the custom errors for the yaml-to-tcl package. 
+
 Examples:
     $ python3 errors.py
 
@@ -19,10 +20,7 @@ class YamlToTclErrorException(Exception):
 
 class YamlToTclErrors:
    """A class to define the custom errors for the yaml-to-tcl package.
-   
-   Attributes:
-       None
-       
+        
     Methods:
         empty_yaml_error: A method to define the error message for empty yaml file.
         invalid_yaml_error: A method to define the error message for invalid yaml file.

@@ -68,23 +68,22 @@ def to_tcl_filelist(filelist):
         filelist (list): A list of files.
 
     Returns:
-        A TCL filelist.
+       filelist (str): A file list in TCL format.
     """
     flist = "{ "
-    for i in range(len(filelist)):
-        flist = flist + str(filelist[i]) + " "
+    for file in filelist:
+        flist = flist + str(file) + " "
     flist = flist + "}"
     return flist
-
+   
 def tcl_vcf (input_dic):
-        """Generate TCL file (for VC Formal tool) from YAML configuration.
+        """Generate TCL file (for VC Formal tool) from dictionary object built from YAML configuration.
 
         Args:
-            f (filename): A YAML file containing the configuration for the VC Formal tool.
-            output_dir (str): A path to the directory where the TCL file will be generated.
-
+            input_dic (dict): A dictionary object built from YAML configuration.
+           
         Returns:
-            A path to the output (TCL) file generated.
+            filename (str): A TCL file generated.
         """ 
         
         # output file name

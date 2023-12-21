@@ -11,7 +11,7 @@ def load_yaml_file(input_file):
         input_file (str): A path to the YAML file to be loaded.
 
     Returns:
-        A dictionary containing the YAML file content.
+        file_name (str): A dictionary containing the YAML file content.
 
     Examples:
         >>> load_yaml_file('example.yaml')
