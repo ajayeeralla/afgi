@@ -6,7 +6,12 @@ task: This task is used to run Formal Verification on the design.
 tool: VC-Formal
 
 # Application mode for the Formal tool
-appmode: FPV
+appmode: FRV
+
+# Enable tool variables
+vars: 
+  - a
+  - b
 
 blackbox:
   modules:
@@ -15,9 +20,23 @@ blackbox:
   cells:
     - add0
     - sub0
-  
+
+ipxact: input.xml
+
 read_file:
   top: adder
+  app-opts:
+    aep:
+      aep:
+        - fsm_sss
+        - b
+        - c
+        - d
+        
+      cov:
+        - fsm_state
+        - fsm_trans
+        
   format: verilog
   filelist: 
     - adder.v
@@ -31,6 +50,8 @@ clock:
 reset: 
   name: rst 
   sense: high
+
+# this is the  end of the file
    
 
 check-mode: block

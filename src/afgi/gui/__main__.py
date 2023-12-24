@@ -5,6 +5,6 @@ def main():
     app.MainLoop()
 
 if __name__ == "__main__":
-    from gui import my_frame
+    from afgi.gui import my_frame
     import wx
     main()

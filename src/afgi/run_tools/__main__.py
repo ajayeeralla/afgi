@@ -15,5 +15,5 @@ def main():
     print(run_obj.run())
 
 if __name__ == "__main__":
-    from run_tools.run import RunTool
+    from afgi.run_tools.run import RunTool
     main()

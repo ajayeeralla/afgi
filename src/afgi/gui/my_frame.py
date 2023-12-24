@@ -60,7 +60,9 @@ class MyFrame(wx.Frame):
     """
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title=title, size=wx.Size(800,600), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL)
-        self.SetIcon(wx.Icon('./icons/title_bar_icon.ico', wx.BITMAP_TYPE_ANY))
+        dirname = os.path.dirname(__file__)
+        filename = os.path.join(dirname, 'icons/title_bar_icon.ico')
+        self.SetIcon(wx.Icon(filename, wx.BITMAP_TYPE_ANY))
         # self.SetBackgroundColour("gray")
         splitter = wx.SplitterWindow(self, -1)
         self.mainPanel = wx.Panel(splitter, -1, style=wx.DOUBLE_BORDER)
@@ -196,8 +198,10 @@ class MyFrame(wx.Frame):
         # Redirect the output of the console to the text control
         self.log = wx.TextCtrl(self.panel2, -1, size=(800, 600), style=wx.TE_MULTILINE|wx.TE_READONLY|wx.HSCROLL)
         redir = RedirectText(self.log)
-        sys.stdout = redir
-       
+        from afgi.run_tools import RunTool
+        run_obj = RunTool("ls", "", ['a', 'l'])
+        print(run_obj.run())
+        sys.stdout = redir.write("> ls"+"\n"+run_obj.run())
 
         # Set Toolbar events.
         tool_bar_items = ['OnNew', 'OnOpen', 'OnSave', 'OnUndo', 'OnRedo', 'OnExit']
