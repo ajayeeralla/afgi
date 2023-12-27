@@ -61,7 +61,7 @@ class MyFrame(wx.Frame):
     def __init__(self, parent, title):
         wx.Frame.__init__(self, parent, title=title, size=wx.Size(800,600), style = wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL)
         dirname = os.path.dirname(__file__)
-        filename = os.path.join(dirname, 'icons/title_bar_icon.ico')
+        filename = os.path.join(dirname, 'icons/tool_icon.png')
         self.SetIcon(wx.Icon(filename, wx.BITMAP_TYPE_ANY))
         # self.SetBackgroundColour("gray")
         splitter = wx.SplitterWindow(self, -1)
@@ -72,7 +72,8 @@ class MyFrame(wx.Frame):
         self.panel2 = wx.Panel(splitter, -1, style=wx.DOUBLE_BORDER)
         self.panel2.SetBackgroundColour("cream")
         splitter.SplitVertically(self.mainPanel, self.panel2)
-
+        self.log = wx.TextCtrl(self.panel2, -1, size=(800, 600), style=wx.TE_MULTILINE|wx.TE_READONLY|wx.HSCROLL)
+        self.redir = RedirectText(self.log)
         #-----------------Default names-----------------#
         self.dirname = '.'
         self.filename = 'Untitled'
@@ -168,40 +169,53 @@ class MyFrame(wx.Frame):
         tb = self.CreateToolBar( wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT | wx.TB_TEXT )
         
         self.SetToolBar(tb)
-       
-
-        tb.AddTool(1, "New", wx.Image('/Users/Ajay/afgi/src/afgi/gui/bitmaps/new.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap(),
+        dirname = os.path.dirname(__file__)
+        tool_img_dir = os.path.join(dirname, 'bitmaps' )
+        tb.AddTool(1, "New", wx.Image(tool_img_dir+'/new.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap(),
                         wx.NullBitmap, wx.ITEM_NORMAL, 'New', "Long help for 'New'.", None)
-        tb.AddTool(2, "Open", wx.Image('/Users/Ajay/afgi/src/afgi/gui/bitmaps/open.png',
+        tb.AddTool(2, "Open", wx.Image(tool_img_dir+'/open.png',
                         wx.BITMAP_TYPE_PNG).ConvertToBitmap(),
                         wx.NullBitmap, wx.ITEM_NORMAL, 'Open', "Long help for 'Open'.", None)
-        tb.AddTool(3, "Save", wx.Image('/Users/Ajay/afgi/src/afgi/gui/bitmaps/save.png',
+        tb.AddTool(3, "Save", wx.Image(tool_img_dir+'/save.png',
                         wx.BITMAP_TYPE_PNG).ConvertToBitmap(),
                         wx.NullBitmap, wx.ITEM_NORMAL, 'Save', "Long help for 'Save'.", None)
         tb.AddSeparator()
-        tb.AddTool(4, "undo", wx.Image('/Users/Ajay/afgi/src/afgi/gui/bitmaps/undo.png',
+        tb.AddTool(4, "undo", wx.Image(tool_img_dir+'/undo.png',
                         wx.BITMAP_TYPE_PNG).ConvertToBitmap(),
                         wx.NullBitmap, wx.ITEM_NORMAL, 'Undo', "Long help for 'Undo'.", None)
-        tb.AddTool(5, "redo", wx.Image('/Users/Ajay/afgi/src/afgi/gui/bitmaps/redo.png',
+        tb.AddTool(5, "redo", wx.Image(tool_img_dir+'/redo.png',
                         wx.BITMAP_TYPE_PNG).ConvertToBitmap(),
                         wx.NullBitmap, wx.ITEM_NORMAL, 'Redo', "Long help for 'Redo'.", None)
         tb.AddSeparator()
-        combo = wx.ComboBox(tb, choices=["FPV", "FRV", "Etc"])
-        tb.AddControl(combo)
+        self.tools_combo = wx.ComboBox(tb, choices=["", "VCF", "JG"])
+        tb.AddControl(self.tools_combo)
+        # Bind the EVT_COMBOBOX event to the on_tools_combo_selected method
+        self.tools_combo.Bind(wx.EVT_COMBOBOX, self.on_tools_combo_selected)
+        self.apps_combo = wx.ComboBox(tb, choices=["", "FPV", "FRV", "Etc"])
+        tb.AddControl(self.apps_combo)
+        # Bind the EVT_COMBOBOX event to the on_tools_combo_selected method
+        self.apps_combo.Bind(wx.EVT_COMBOBOX, self.on_apps_combo_selected)
+        self.mode_combo = wx.ComboBox(tb, choices=["", "GUI", "Batch"] )
+        tb.AddControl(self.mode_combo)
+        # Bind the EVT_COMBOBOX event to the on_tools_combo_selected method
+        self.mode_combo.Bind(wx.EVT_COMBOBOX, self.on_mode_combo_selected)
+        tb.AddTool(7, "Run", wx.Image(tool_img_dir+'/run_button.png',
+                wx.BITMAP_TYPE_PNG).ConvertToBitmap(),
+                wx.NullBitmap, wx.ITEM_NORMAL, 'Run', "Long help for 'Run'.", None)
+        self.Bind(wx.EVT_TOOL, self.onRun, id=7)
         tb.AddSeparator()
-        tb.AddTool(6, "Exit", wx.Image('/Users/Ajay/afgi/src/afgi/gui/bitmaps/exit.png',
+        tb.AddTool(6, "Exit", wx.Image(tool_img_dir+'/exit.png',
                         wx.BITMAP_TYPE_PNG).ConvertToBitmap(),
                         wx.NullBitmap, wx.ITEM_NORMAL, 'Exit', "Long help for 'Exit'.", None)
         tb.AddSeparator()
         tb.Realize()
-
         # Redirect the output of the console to the text control
         self.log = wx.TextCtrl(self.panel2, -1, size=(800, 600), style=wx.TE_MULTILINE|wx.TE_READONLY|wx.HSCROLL)
         redir = RedirectText(self.log)
         from afgi.run_tools import RunTool
         run_obj = RunTool("ls", "", ['a', 'l'])
         print(run_obj.run())
-        sys.stdout = redir.write("> ls"+"\n"+run_obj.run())
+        sys.stdout = redir.write("$ ls"+"\n"+run_obj.run())
 
         # Set Toolbar events.
         tool_bar_items = ['OnNew', 'OnOpen', 'OnSave', 'OnUndo', 'OnRedo', 'OnExit']
@@ -228,7 +242,34 @@ class MyFrame(wx.Frame):
         # Create Tool 
         self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.OnPageChanged)
         self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGING, self.OnPageChanging)
-
+    def on_tools_combo_selected(self, event):
+        # Get the selected choice
+        selected_choice = event.GetString()
+    def on_apps_combo_selected(self, event):
+        # Get the selected choice
+        selected_choice = event.GetString()
+    def on_mode_combo_selected(self, event):
+        # Get the selected choice
+        selected_choice = event.GetString()
+    def onRun(self, event):
+        # Get the selected choice
+        params = [self.apps_combo.GetValue(), self.mode_combo.GetValue()]
+        idx = self.nb.GetSelection()
+        script = self.nb.GetPageText(idx)
+        if script.endswith(".yaml"):
+            import afgi.yaml_to_tcl.tcl_gen as TclGen
+            TclGen.TclGen(script, script.replace(".yaml", ".tcl"))
+            script = script.replace(".yaml", ".tcl")
+        tool = self.tools_combo.GetValue().lower()
+        from afgi.run_tools import RunTool
+        run_obj = RunTool(tool, script, params)
+        try:
+            err = run_obj.run()
+        except:
+            pass
+        
+        RedirectText(self.log).write(f"$ {tool} {script} {str(['-'+x.lower() for x in params])}\n")
+      
     def OnPageChanged(self, event):
           old = event.GetOldSelection()
           new = event.GetSelection()
