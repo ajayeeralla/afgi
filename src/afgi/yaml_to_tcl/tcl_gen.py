@@ -9,8 +9,8 @@ class TclGen():
     def __init__(self, in_file, out_file):
         self.in_file = in_file
         self.out_file = out_file
-        self.dic = self.load_yaml_file(self.in_file) 
-        print(self.dic['tool']) 
+        self.dic = self.load_yaml_file(self.in_file)
+        print('The tool is: ', self.dic['tool'])
         if self.dic['tool'] == "VC-Formal":
                 TclGenVcf(self.dic, self.out_file)
         elif self.dic['tool'] == "JasperGold":

@@ -36,9 +36,9 @@ class RunTool:
        opts = ""
        for arg in self.args:
             if arg.startswith('-'):
-                opts = opts + ' ' + arg
+                opts = opts + ' ' + arg.lower()
             else:
-                opts = opts + ' ' +'-' + arg
+                opts = opts + ' ' +'-' + arg.lower()
        return opts
 
     # Run formal verification tool on the given script

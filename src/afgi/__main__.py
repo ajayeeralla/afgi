@@ -31,8 +31,8 @@ def main():
     for o, a in opts:
         if o in ("-g", "--gui"):
          app = wx.App()
-         frame = my_frame.MyFrame(parent=None, title='AFGI')
-         frame.Show()
+         fr = frame.MyFrame(parent=None, title='AFGI')
+         fr.Show()
          app.MainLoop()
         elif o in ("-b", "--batch"):
          new_opts = [(x, _) for (x, _) in opts if x not in ("-b", "--batch")]
@@ -66,7 +66,7 @@ def main():
         else:
            pass
 if __name__ == "__main__":
-    from afgi.gui import my_frame
+    from afgi.gui import frame
     import wx
     import getopt, sys
     main()

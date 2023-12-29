@@ -8,7 +8,7 @@ import os
 
 
 class TclGenVcf():
-       
+    
         def __init__(self, dic, out_file):  
             self.dic = dic
             self.out_file = out_file
@@ -49,7 +49,7 @@ class TclGenVcf():
                  raise YamlToTclErrorException(self.yaml_exception.appmode_error())
             self.check_fv()
             self.out_file.close()
-            print("TCL file generated.")
+            print('The TCL file {} generated!!'.format(self.out_file.name))
             
         
         def prelude(self):

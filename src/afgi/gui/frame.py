@@ -1,16 +1,10 @@
-#!/usr/bin/env python
-
-""" This module contains MyFrame class which is used to create the main window of the application
-class MyFrame:
-
-    Attributes:
-        
-"""
+#!/usr/bin/env python3
 import wx;
 import os;
 import sys;
 import itertools;
 
+# Setting up the wildcard for the file dialog
 wildcard = "Text (*.txt)|*.txt|" \
             "Python (*.py)|*.py|" \
             "Yaml (*.yaml)|*.yaml|" \
@@ -31,8 +25,6 @@ class RedirectText(object):
         """A method to write the output to the text control 
         Args:
             string (str): output string
-        Returns:    
-            None
         """
         self.out.WriteText(string)
 
@@ -63,7 +55,8 @@ class MyFrame(wx.Frame):
         dirname = os.path.dirname(__file__)
         filename = os.path.join(dirname, 'icons/tool_icon.png')
         self.SetIcon(wx.Icon(filename, wx.BITMAP_TYPE_ANY))
-        # self.SetBackgroundColour("gray")
+
+        # Setting up the splitter window.
         splitter = wx.SplitterWindow(self, -1)
         self.mainPanel = wx.Panel(splitter, -1, style=wx.DOUBLE_BORDER)
         self.mainPanel.SetBackgroundColour("white")
@@ -81,11 +74,9 @@ class MyFrame(wx.Frame):
 
         # Creating the menubar.
         menu_bar = wx.MenuBar()
-
         # Adding the MenuBar to the Frame content.
         self.SetMenuBar(menu_bar)  
-
-         # Setting up file menu.
+        # Setting up file menu.
         file_menu= wx.Menu()
         menu_bar.Append(file_menu, "&File") # Adding the "file_menu" to the MenuBar
         # Create and add menu items to the file menu
@@ -122,32 +113,32 @@ class MyFrame(wx.Frame):
         # Setting up View menu.
         view_menu= wx.Menu()
         menu_bar.Append(view_menu,"&View") # Adding the "view_menu" to the MenuBar
-        # create and add menu items to the view menu
-        
         # Setting up Run menu.
         run_menu= wx.Menu()
         menu_bar.Append(run_menu,"&Run") # Adding the "run_menu" to the MenuBar
         # create and add menu items to the run menu
-        run_vcf_id = wx.ID_ANY
-        run_jg_id = wx.ID_ANY
-        run_menu_labels = ["&VCF", "&JG"]
-        run_menu_item_ids = [run_vcf_id, run_jg_id]
-        run_menu_descs = ["To run VCF", "To run JG"]
+        run_id = wx.ID_ANY
+        # run_jg_id = wx.ID_ANY
+        run_menu_labels = ["&Run\tCtrl+R"]
+        run_menu_item_ids = [run_id]
+        run_menu_descs = ["Run the selected tool on the given script"]
         run_menu_items = []
         for id, label, desc in itertools.zip_longest(run_menu_item_ids, run_menu_labels, run_menu_descs):
             run_menu_item = wx.MenuItem(run_menu, id, label, desc, wx.ITEM_NORMAL)
             run_menu.Append(run_menu_item)  
             run_menu_items.append(run_menu_item)
+        self.Bind(wx.EVT_MENU, self.onRun, run_menu_items[0])
+        
 
-        # Setting up Terminal menu.
-        terminal_menu= wx.Menu()
-        menu_bar.Append(terminal_menu, "&Terminal")
+        # # Setting up Terminal menu.
+        # terminal_menu= wx.Menu()
+        # menu_bar.Append(terminal_menu, "&Terminal")
 
-        terminal_menu_item1 = wx.MenuItem(terminal_menu, wx.ID_ANY, "&New Terminal", "To open a new terminal", wx.ITEM_NORMAL)
-        terminal_menu.Append(terminal_menu_item1)
+        # terminal_menu_item1 = wx.MenuItem(terminal_menu, wx.ID_ANY, "&New Terminal", "To open a new terminal", wx.ITEM_NORMAL)
+        # terminal_menu.Append(terminal_menu_item1)
 
-        terminal_menu_item2 = wx.MenuItem(terminal_menu, wx.ID_CLOSE, "&Close Terminal", "To close the terminal", wx.ITEM_NORMAL)
-        terminal_menu.Append(terminal_menu_item2)
+        # terminal_menu_item2 = wx.MenuItem(terminal_menu, wx.ID_CLOSE, "&Close Terminal", "To close the terminal", wx.ITEM_NORMAL)
+        # terminal_menu.Append(terminal_menu_item2)
 
         # Setting up Help menu.
         help_menu= wx.Menu()
@@ -160,17 +151,17 @@ class MyFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnAbout, help_menu_item1)
         self.Show(True)
 
-
         # Setting up the status bar.
         self.CreateStatusBar()
         self.SetStatusText("Welcome to AFGI: Augmented Formal Graphical Interface!")
 
         # Setting up the tb.
         tb = self.CreateToolBar( wx.TB_HORIZONTAL | wx.NO_BORDER | wx.TB_FLAT | wx.TB_TEXT )
-        
         self.SetToolBar(tb)
+
         dirname = os.path.dirname(__file__)
         tool_img_dir = os.path.join(dirname, 'bitmaps' )
+
         tb.AddTool(1, "New", wx.Image(tool_img_dir+'/new.png', wx.BITMAP_TYPE_PNG).ConvertToBitmap(),
                         wx.NullBitmap, wx.ITEM_NORMAL, 'New', "Long help for 'New'.", None)
         tb.AddTool(2, "Open", wx.Image(tool_img_dir+'/open.png',
@@ -187,18 +178,16 @@ class MyFrame(wx.Frame):
                         wx.BITMAP_TYPE_PNG).ConvertToBitmap(),
                         wx.NullBitmap, wx.ITEM_NORMAL, 'Redo', "Long help for 'Redo'.", None)
         tb.AddSeparator()
-        self.tools_combo = wx.ComboBox(tb, choices=["", "VCF", "JG"])
+        tb.AddTool(8, "Translate", wx.Image(tool_img_dir+'/convert.png',
+                wx.BITMAP_TYPE_PNG).ConvertToBitmap(),
+                wx.NullBitmap, wx.ITEM_NORMAL, 'Translate', "Translate to TCL", None)
+        self.Bind(wx.EVT_TOOL, self.onTranslate, id=8)
+        self.tools_combo = wx.ComboBox(tb, choices=["VCF", "JG"])
         tb.AddControl(self.tools_combo)
-        # Bind the EVT_COMBOBOX event to the on_tools_combo_selected method
-        self.tools_combo.Bind(wx.EVT_COMBOBOX, self.on_tools_combo_selected)
-        self.apps_combo = wx.ComboBox(tb, choices=["", "FPV", "FRV", "Etc"])
+        self.apps_combo = wx.ComboBox(tb, choices=["FPV", "FRV", "Etc"])
         tb.AddControl(self.apps_combo)
-        # Bind the EVT_COMBOBOX event to the on_tools_combo_selected method
-        self.apps_combo.Bind(wx.EVT_COMBOBOX, self.on_apps_combo_selected)
-        self.mode_combo = wx.ComboBox(tb, choices=["", "GUI", "Batch"] )
+        self.mode_combo = wx.ComboBox(tb, choices=["GUI", "Batch"] )
         tb.AddControl(self.mode_combo)
-        # Bind the EVT_COMBOBOX event to the on_tools_combo_selected method
-        self.mode_combo.Bind(wx.EVT_COMBOBOX, self.on_mode_combo_selected)
         tb.AddTool(7, "Run", wx.Image(tool_img_dir+'/run_button.png',
                 wx.BITMAP_TYPE_PNG).ConvertToBitmap(),
                 wx.NullBitmap, wx.ITEM_NORMAL, 'Run', "Long help for 'Run'.", None)
@@ -212,26 +201,20 @@ class MyFrame(wx.Frame):
         # Redirect the output of the console to the text control
         self.log = wx.TextCtrl(self.panel2, -1, size=(800, 600), style=wx.TE_MULTILINE|wx.TE_READONLY|wx.HSCROLL)
         redir = RedirectText(self.log)
-        from afgi.run_tools import RunTool
-        run_obj = RunTool("ls", "", ['a', 'l'])
-        print(run_obj.run())
-        sys.stdout = redir.write("$ ls"+"\n"+run_obj.run())
+        sys.stdout = redir
 
         # Set Toolbar events.
         tool_bar_items = ['OnNew', 'OnOpen', 'OnSave', 'OnUndo', 'OnRedo', 'OnExit']
         for item, i in zip(tool_bar_items, range(6)):
             item = getattr(self, item)
             self.Bind(wx.EVT_TOOL, item, id=i+1)
-      
-        # Set View menu item events.
 
         # Set Run menu item events.
-        self.Bind(wx.EVT_MENU, self.OnVCF, run_menu_items[0])
-        self.Bind(wx.EVT_MENU, self.OnJG, run_menu_items[1])
+        self.Bind(wx.EVT_MENU, self.onRun, run_menu_items[0])
 
-        # Set Terminal menu item events.
-        self.Bind(wx.EVT_MENU, self.OnNewTerminal, terminal_menu_item1)
-        self.Bind(wx.EVT_MENU, self.OnCloseTerminal, terminal_menu_item2)
+        # # Set Terminal menu item events.
+        # self.Bind(wx.EVT_MENU, self.OnNewTerminal, terminal_menu_item1)
+        # self.Bind(wx.EVT_MENU, self.OnCloseTerminal, terminal_menu_item2)
        
         # Shortcuts for menu items
         key_shortcuts = ["N", "O", "S", "P", "Q"]
@@ -242,16 +225,10 @@ class MyFrame(wx.Frame):
         # Create Tool 
         self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGED, self.OnPageChanged)
         self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGING, self.OnPageChanging)
-    def on_tools_combo_selected(self, event):
-        # Get the selected choice
-        selected_choice = event.GetString()
-    def on_apps_combo_selected(self, event):
-        # Get the selected choice
-        selected_choice = event.GetString()
-    def on_mode_combo_selected(self, event):
-        # Get the selected choice
-        selected_choice = event.GetString()
+
+    # Run event handlers
     def onRun(self, event):
+        """ A method to run a tool on the given script with the given arguments"""
         # Get the selected choice
         params = [self.apps_combo.GetValue(), self.mode_combo.GetValue()]
         idx = self.nb.GetSelection()
@@ -267,23 +244,48 @@ class MyFrame(wx.Frame):
             err = run_obj.run()
         except:
             pass
-        
-        RedirectText(self.log).write(f"$ {tool} {script} {str(['-'+x.lower() for x in params])}\n")
+        RedirectText(self.log).write(f"$ {tool} {script} {' '.join(['-'+x.lower() for x in params])}\n")
+
+    # Translate event handlers
+    def onTranslate(self, event):
+        """ A method to translate a yaml file to tcl and open it in a new tab"""
+        # Get the selected choice
+        idx = self.nb.GetSelection()
+        script = self.nb.GetPageText(idx)
+        if script.endswith(".yaml"):
+            import afgi.yaml_to_tcl.tcl_gen as TclGen
+            TclGen.TclGen(script, script.replace(".yaml", ".tcl"))
+            script = script.replace(".yaml", ".tcl")
+        f = open(script, 'r')
+        content = f.read()
+        self.tab = MyPanel(self.nb, content)
+        self.nb.AddPage(self.tab, script, True)
+        f.close()
+        RedirectText(self.log).write(f"$ Translated to  {script}\n")
       
     def OnPageChanged(self, event):
+          """ A method to handle the page changed event"""
           old = event.GetOldSelection()
           new = event.GetSelection()
           sel = self.nb.GetSelection()
           print ('OnPageChanged,  old:%d, new:%d, sel:%d\n' % (old, new, sel))
           event.Skip()
+
     def OnPageChanging(self, event):
+          """ A method to handle the page changing event"""
           old = event.GetOldSelection()
           new = event.GetSelection()
           sel = self.nb.GetSelection()
           print ('OnPageChanging, old:%d, new:%d, sel:%d\n' % (old, new, sel))
           event.Skip()
-
+    # File menu item event handlers
     def MyFileDialog(self, text, style, mode):
+        """ A method to create a file dialog box
+        Args:
+            text (str): text to be displayed in the status bar
+            style (int): style of the file dialog box
+            mode (str): set the file mode: read, write, append, etc.
+        """
         dlg = wx.FileDialog(self, "Give a file name", self.dirname, self.filename, wildcard, style)
         if dlg.ShowModal() == wx.ID_OK:
             self.filename = dlg.GetFilename()
@@ -310,26 +312,21 @@ class MyFrame(wx.Frame):
                 pass
         dlg.Destroy()
 
-
     def SaveCurrentFile(self):
+        """ A method to display a message box to save the current file"""
         return wx.MessageBox("Do you want to save the file?", "Please confirm", 
                       wx.ICON_QUESTION | wx.YES_NO, self) == wx.YES
         
-
-
-    #file menu item event handlers.
-    # OnNew method is used to create a new file.
     def OnNew(self, event):
-        """ Create a new file"""
+        """ A method to create a new file"""
         if self.nb.GetCurrentPage() is not None:
             if self.nb.GetCurrentPage().text.IsModified():
                 if self.SaveCurrentFile():
                     self.OnSave(event)
         self.MyFileDialog("New file Created!", wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT, "new")
       
-
     def OnOpen(self, event):
-        """ Open a file"""
+        """ A method to open a file"""
         if self.nb.GetCurrentPage() is not None: 
             if self.nb.GetCurrentPage().text.IsModified():
                 if self.SaveCurrentFile():
@@ -337,7 +334,7 @@ class MyFrame(wx.Frame):
         self.MyFileDialog("File opened!", wx.FD_OPEN | wx.FD_FILE_MUST_EXIST, "open")
 
     def OnSave(self, event):
-        """ Save file"""
+        """ A method to handle the save event"""
         if self.nb.GetCurrentPage() is not None:
             if self.nb.GetCurrentPage().text.IsModified():
                 index = self.nb.GetSelection()
@@ -348,51 +345,41 @@ class MyFrame(wx.Frame):
                 f.close()
 
     def OnSaveAs(self, event):
-        """ Save a file with a different name"""
+        """ A method to handle the "save as" event"""
         self.MyFileDialog("File saved!", wx.FD_SAVE | wx.FD_OVERWRITE_PROMPT, "write")
 
     def OnExit(self, event):
-            self.Close(True)  # Close the frame.
+        """ A method to handle the exit event"""
+        self.Close(True)  # Close the frame.
 
     # edit menu item event handlers        
     def OnUndo(self, event):
+        """ A method to handle the undo event"""
         self.nb.GetCurrentPage().text.Undo()
 
     def OnRedo(self, event):
+        """ A method to handle the redo event"""
         self.nb.GetCurrentPage().text.Redo()
 
     def OnCut(self, event):
+        """ A method to handle the cut event"""
         self.nb.GetCurrentPage().text.Cut()
 
     def OnCopy(self, event):
+        """ A method to handle the copy event"""
         self.nb.GetCurrentPage().text.Copy()
 
     def OnPaste(self, event):
+        """ A method to handle the paste event"""
         self.nb.GetCurrentPage().text.Paste()
+
     def OnDelete(self, event):
+        """ A method to handle the delete event"""
         self.nb.GetCurrentPage().text.Clear()
+
     def OnSelectAll(self, event):
+        """ A method to handle the select all event"""
         self.nb.GetCurrentPage().text.SelectAll()
-
-    # run menu item event handlers
-    def OnVCF(self, event):
-        frame = wx.Frame(None, -1, 'win.py')
-        frame.Show()
-
-    def OnJG(self, event):
-        frame = wx.Frame(None, -1, 'win.py')
-        frame.Show()
-
-
-    # terminal menu item event handlers
-    def OnNewTerminal(self, event):
-        """ A method to open a new terminal"""
-        frame = wx.Frame(None, -1, 'win.py')
-        frame.Show()
-
-    def OnCloseTerminal(self, event):
-        """ A method to close the terminal"""
-        self.Close(True)
 
     # Help menu item event handlers
     def OnAbout(self, event):
