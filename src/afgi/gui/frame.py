@@ -113,6 +113,23 @@ class MyFrame(wx.Frame):
         # Setting up View menu.
         view_menu= wx.Menu()
         menu_bar.Append(view_menu,"&View") # Adding the "view_menu" to the MenuBar
+        # view_menu_labels = ["&Zoom In\tCtrl++", "&Zoom Out\tCtrl+-", "&Reset Zoom\tCtrl+0", "&View TCL\tCtrl+T"]
+        view_menu_labels = ["&View TCL\tCtrl+T"]
+        # view_menu_item_ids = [wx.ID_ZOOM_IN, wx.ID_ZOOM_OUT, wx.ID_ZOOM_100, wx.ID_PREVIEW]
+        view_menu_item_ids = [wx.ID_PREVIEW]
+        # view_menu_descs = ["To zoom in the text", "To zoom out the text", "To reset the zoom", "Generate and view the TCL file"]
+        view_menu_descs = ["Generate and view the TCL file"]
+        view_menu_items = []
+        for id, label, desc in itertools.zip_longest(view_menu_item_ids, view_menu_labels, view_menu_descs):
+            view_menu_item = wx.MenuItem(view_menu, id, label, desc, wx.ITEM_NORMAL)
+            view_menu_items.append(view_menu_item)
+            view_menu.Append(view_menu_item)
+        # Setting up event handlers for the view menu items.
+        # view_menu_events = ['OnZoomIn', 'OnZoomOut', 'OnResetZoom', 'OnTranslate']
+        view_menu_events = ['OnTranslate']
+        for e, item in zip(view_menu_events, view_menu_items):
+            event = getattr(self, e)
+            self.Bind(wx.EVT_MENU, event, item)
         # Setting up Run menu.
         run_menu= wx.Menu()
         menu_bar.Append(run_menu,"&Run") # Adding the "run_menu" to the MenuBar
@@ -127,7 +144,7 @@ class MyFrame(wx.Frame):
             run_menu_item = wx.MenuItem(run_menu, id, label, desc, wx.ITEM_NORMAL)
             run_menu.Append(run_menu_item)  
             run_menu_items.append(run_menu_item)
-        self.Bind(wx.EVT_MENU, self.onRun, run_menu_items[0])
+        self.Bind(wx.EVT_MENU, self.OnRun, run_menu_items[0])
         
 
         # # Setting up Terminal menu.
@@ -181,7 +198,7 @@ class MyFrame(wx.Frame):
         tb.AddTool(8, "Translate", wx.Image(tool_img_dir+'/convert.png',
                 wx.BITMAP_TYPE_PNG).ConvertToBitmap(),
                 wx.NullBitmap, wx.ITEM_NORMAL, 'Translate', "Translate to TCL", None)
-        self.Bind(wx.EVT_TOOL, self.onTranslate, id=8)
+        self.Bind(wx.EVT_TOOL, self.OnTranslate, id=8)
         self.tools_combo = wx.ComboBox(tb, choices=["VCF", "JG"])
         tb.AddControl(self.tools_combo)
         self.apps_combo = wx.ComboBox(tb, choices=["FPV", "FRV", "Etc"])
@@ -191,7 +208,7 @@ class MyFrame(wx.Frame):
         tb.AddTool(7, "Run", wx.Image(tool_img_dir+'/run_button.png',
                 wx.BITMAP_TYPE_PNG).ConvertToBitmap(),
                 wx.NullBitmap, wx.ITEM_NORMAL, 'Run', "Long help for 'Run'.", None)
-        self.Bind(wx.EVT_TOOL, self.onRun, id=7)
+        self.Bind(wx.EVT_TOOL, self.OnRun, id=7)
         tb.AddSeparator()
         tb.AddTool(6, "Exit", wx.Image(tool_img_dir+'/exit.png',
                         wx.BITMAP_TYPE_PNG).ConvertToBitmap(),
@@ -210,7 +227,7 @@ class MyFrame(wx.Frame):
             self.Bind(wx.EVT_TOOL, item, id=i+1)
 
         # Set Run menu item events.
-        self.Bind(wx.EVT_MENU, self.onRun, run_menu_items[0])
+        self.Bind(wx.EVT_MENU, self.OnRun, run_menu_items[0])
 
         # # Set Terminal menu item events.
         # self.Bind(wx.EVT_MENU, self.OnNewTerminal, terminal_menu_item1)
@@ -227,7 +244,7 @@ class MyFrame(wx.Frame):
         self.Bind(wx.EVT_NOTEBOOK_PAGE_CHANGING, self.OnPageChanging)
 
     # Run event handlers
-    def onRun(self, event):
+    def OnRun(self, event):
         """ A method to run a tool on the given script with the given arguments"""
         # Get the selected choice
         params = [self.apps_combo.GetValue(), self.mode_combo.GetValue()]
@@ -247,28 +264,33 @@ class MyFrame(wx.Frame):
         RedirectText(self.log).write(f"$ {tool} {script} {' '.join(['-'+x.lower() for x in params])}\n")
 
     # Translate event handlers
-    def onTranslate(self, event):
+    def OnTranslate(self, event):
         """ A method to translate a yaml file to tcl and open it in a new tab"""
         # Get the selected choice
         idx = self.nb.GetSelection()
         script = self.nb.GetPageText(idx)
-        if script.endswith(".yaml"):
+        tcl_file = script.replace(".yaml", ".tcl")
+        if os.path.isfile(tcl_file):
+            wx.MessageBox(f"TCL file {tcl_file} already exists!", "Please confirm", 
+                      wx.ICON_QUESTION | wx.YES_NO, self) == wx.YES
+            RedirectText(self.log).write(f"$ Openining the existing {tcl_file}!\n")
+        else:
             import afgi.yaml_to_tcl.tcl_gen as TclGen
-            TclGen.TclGen(script, script.replace(".yaml", ".tcl"))
-            script = script.replace(".yaml", ".tcl")
-        f = open(script, 'r')
+            TclGen.TclGen(script, tcl_file)
+            RedirectText(self.log).write(f"$ Generating and opening {tcl_file}!\n")
+        f = open(tcl_file, 'r')
         content = f.read()
         self.tab = MyPanel(self.nb, content)
-        self.nb.AddPage(self.tab, script, True)
+        self.nb.AddPage(self.tab, tcl_file, True)
         f.close()
-        RedirectText(self.log).write(f"$ Translated to  {script}\n")
+       
       
     def OnPageChanged(self, event):
           """ A method to handle the page changed event"""
           old = event.GetOldSelection()
           new = event.GetSelection()
           sel = self.nb.GetSelection()
-          print ('OnPageChanged,  old:%d, new:%d, sel:%d\n' % (old, new, sel))
+        #   print ('OnPageChanged,  old:%d, new:%d, sel:%d\n' % (old, new, sel))
           event.Skip()
 
     def OnPageChanging(self, event):
@@ -276,7 +298,7 @@ class MyFrame(wx.Frame):
           old = event.GetOldSelection()
           new = event.GetSelection()
           sel = self.nb.GetSelection()
-          print ('OnPageChanging, old:%d, new:%d, sel:%d\n' % (old, new, sel))
+        #   print ('OnPageChanging, old:%d, new:%d, sel:%d\n' % (old, new, sel))
           event.Skip()
     # File menu item event handlers
     def MyFileDialog(self, text, style, mode):
@@ -306,6 +328,8 @@ class MyFrame(wx.Frame):
             elif mode == "write":
                 f = open(os.path.join(self.dirname, self.filename), 'w')
                 f.write(self.nb.GetCurrentPage().text.GetValue())
+                self.tab = MyPanel(self.nb, self.nb.GetCurrentPage().text.GetValue())
+                self.nb.AddPage(self.tab, self.filename, True)
                 f.close()
                 self.PushStatusText(text)
             else:
@@ -380,6 +404,18 @@ class MyFrame(wx.Frame):
     def OnSelectAll(self, event):
         """ A method to handle the select all event"""
         self.nb.GetCurrentPage().text.SelectAll()
+
+    # view menu item event handlers
+    # def OnZoomIn(self, event):
+    #     """ A method to handle the zoom in event"""
+    #     self.nb.GetCurrentPage().text.SetZoom(self.nb.GetCurrentPage().text.GetZoom()+1)
+
+    # def OnZoomOut(self, event):
+    #     """ A method to handle the zoom out event"""
+    #     self.nb.GetCurrentPage().text.SetZoom(self.nb.GetCurrentPage().text.GetZoom()-1)
+    # def OnResetZoom(self, event):
+    #     """ A method to handle the reset zoom event"""
+    #     self.nb.GetCurrentPage().text.SetZoom(0)
 
     # Help menu item event handlers
     def OnAbout(self, event):
