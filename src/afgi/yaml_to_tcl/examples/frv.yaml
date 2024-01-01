@@ -1,7 +1,7 @@
-
+#Description: |
+# This is a sample YAML file for the Formal
 # Task name
-task: This task is used to run Formal Verification on the design.
-
+task: Generate FRV for the design.
 # Tool name
 tool: VC-Formal
 
@@ -20,23 +20,12 @@ blackbox:
   cells:
     - add0
     - sub0
+  report: True  
 
 ipxact: input.xml
 
 read_file:
   top: adder
-  app-opts:
-    aep:
-      aep:
-        - fsm_sss
-        - b
-        - c
-        - d
-        
-      cov:
-        - fsm_state
-        - fsm_trans
-        
   format: verilog
   filelist: 
     - adder.v
@@ -50,9 +39,6 @@ clock:
 reset: 
   name: rst 
   sense: high
-
-# this is the  end of the file
-   
 
 check-mode: block
 

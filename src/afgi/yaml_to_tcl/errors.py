@@ -1,12 +1,6 @@
-""" This module contains the custom errors for the yaml-to-tcl package. 
-
-Examples:
-    $ python3 errors.py
-
-Exports: 
-    classes: YamlToTclErrorException, YamlToTclErrors
+""" This module contains a class that defines custom errors for the yaml-to-tcl package. 
 """
-
+# YamlToTclErrorException is a custom exception class for the yaml-to-tcl package.
 class YamlToTclErrorException(Exception):
     """A class to define the custom exception for the yaml-to-tcl package. 
     This class inherits from the Exception class.
@@ -18,6 +12,7 @@ class YamlToTclErrorException(Exception):
         self.message = message
         super().__init__(self.message)
 
+# YamlToTclErrors is a class that defines custom errors for the yaml-to-tcl package.
 class YamlToTclErrors:
    """A class to define the custom errors for the yaml-to-tcl package.
         

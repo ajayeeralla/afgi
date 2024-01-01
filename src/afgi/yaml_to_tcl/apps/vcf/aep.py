@@ -1,12 +1,15 @@
-
+#! /usr/bin/env python3
+# Path: src/afgi/yaml_to_tcl/apps/vcf/aep.py
+""" This module contains "AEP" (derived from FPV) class which is used to generate TCL file for VCF AEP appmode."""
 import datetime
 from afgi.yaml_to_tcl.errors import YamlToTclErrorException, YamlToTclErrors
 from afgi.yaml_to_tcl.utils import Utils
 from afgi.yaml_to_tcl.apps.vcf.fpv import FPV
 
 class AEP(FPV):
-
+    """ This class is used to generate TCL file for VCF AEP appmode. It uses the FPV class as a base class."""
     def read_file(self):
+        """ This method redifines the read_file method of the FPV class to add the AEP specific options."""
         read_file = self.dic['read_file']
 
         if read_file == None:

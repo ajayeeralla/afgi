@@ -1,6 +1,7 @@
-# Desc: YAML to TCL conversion
+#!/usr/bin/env python3
+# Path: src/afgi/__init__.py
 """
-    This package contains the scripts for converting YAML to TCL.
+This package contains the scripts for converting YAML to TCL.
 """
 from afgi.yaml_to_tcl.tcl_gen import TclGen
 from afgi.yaml_to_tcl.tcl_gen_jg import TclGenJg

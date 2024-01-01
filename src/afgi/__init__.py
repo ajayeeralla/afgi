@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# Path: src/afgi/__init__.py
 """
 This is the main package for the AFGI project.
 """

@@ -1,23 +1,31 @@
+#!/usr/bin/env python3
+# Path: src/afgi/__main__.py
+""" This module is used to run the AFGI tool.
+Example:
+    1. afgi -g
+    2. afgi -b -y <yaml_file> -o <output_file> --vcf
+    3. afgi -b -t <tcl_file> --jg
+"""
 
+# usage manual
 def usage():
     print("Welcome to AFGI: Augmented Formal Graphical Interface!\n")
     print("Usage:")
     print("afgi [Optional] Mandatory parameters")
     print("\n")
     print("Mandatory:")
-    print("-t, --tcl                   TCL file") 
-    print("-c, --config                 Configuration required to locate (or generate) formal-friendly filelist")
-    print("-m, --module                 Top module name of the design")
-    print("-l, --link                   VLNV link of the design")
-    print("-b, --bind_file              Bind file for binding DUT with a bus wrapper, generic, AXI, APB, or AHB")
-    print("-v, --view                   View name for bootenv") 
+    print("-g, --gui                   GUI mode")
+    print("-b, --batch                 Batch mode")
+    print("-y, --yaml                  YAML file")
+    print("-o, --output                Output TCL file")
+    print("-t, --tcl                   TCL file")
+    print("--vcf                        VCF tool")
+    print("--jg                         JasperGold tool")
     print("\n")
-    print("Optional:")
-    print("-h, --help                   Displays this message")
-    print("-t, --test                   Formal test name")
-    print("-V, --Version                Output version information")
-    
+
+# main function
 def main():
+    """ This function is used to run the AFGI tool."""
     try:
         opts, args = getopt.getopt(sys.argv[1:], "y:t:hbgo:", ["vcf", "jg", "yaml=", "tcl=", "gui", "batch", "help", "output="])
     except getopt.GetoptError as err:

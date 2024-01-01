@@ -1,0 +1,60 @@
+
+# Task name
+task: Generate AEP for the design.
+
+# Tool name
+tool: VC-Formal
+
+# Application mode for the Formal tool
+appmode: AEP
+
+# Enable tool specific variables
+vars: 
+  - a
+  - b
+
+# Blackbox modules and cells
+blackbox:
+  modules:
+    - add.v
+    - sub.v
+  cells:
+    - add0
+    - sub0
+# List blackboxes
+  report: True  
+
+read_file:
+  top: adder
+  app-opts:
+    aep:
+      aep:
+        - fsm_sss
+        - b
+        - c
+        - d
+        
+      cov:
+        - fsm_state
+        - fsm_trans
+        
+  format: verilog
+  filelist: 
+    - adder.v
+    - adder_tb.v
+    - mult.v
+
+clock:
+  name: clk
+  period: 10
+
+reset: 
+  name: rst 
+  sense: high
+
+check-mode: block
+
+
+  
+
+

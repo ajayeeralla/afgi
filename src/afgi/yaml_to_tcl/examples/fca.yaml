@@ -1,0 +1,73 @@
+
+# Task name: Just a descritpion
+task: This task is used to do formal coverage analysis on the design.
+
+# Tool name: either VC-Formal or JasperGold
+tool: VC-Formal
+
+# Application mode for the Formal tool
+appmode: FCA
+
+# Enable tool specifica variables
+vars: 
+# Enable the reset reachable check
+  - fml_reset_property_check
+# Enable Branch coverage if required
+  - fml_cov_enable_branch_cov
+# Enable Toggle coverage for input ports if required
+  - fml_cov_tgl_enable_input_port
+# Extracting coverage options used in simulation
+  - fml_cov_override_db_opt
+
+# Blackbox modules and cells
+blackbox:
+  modules:
+    - add.v
+    - sub.v
+  cells:
+    - add0
+    - sub0
+# List blackboxes
+  report: True  
+
+# Read simulation coverage database if available
+cov: 
+  cov_input: simv.vdb
+  cov_dut:  tb.inst 
+
+# Compile design
+read_file:
+  top: adder
+  cov-opts:
+    - line
+    - cond
+    - tgl
+    - fsm_state
+    - fsm_transition
+    - branch
+    - cg        
+  format: verilog
+  filelist: 
+    - adder.v
+    - adder_tb.v
+    - mult.v
+
+# Manage certitude fault Database
+certitude-DB: adder.certitude
+
+# Clock and reset
+clock:
+  name: clk
+  period: 10
+
+reset: 
+  name: rst 
+  sense: high
+
+# this is the  end of the file
+check-mode: block
+
+
+  
+
+

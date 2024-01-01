@@ -147,16 +147,22 @@ class MyFrame(wx.Frame):
         self.Bind(wx.EVT_MENU, self.OnRun, run_menu_items[0])
         
 
-        # # Setting up Terminal menu.
-        # terminal_menu= wx.Menu()
-        # menu_bar.Append(terminal_menu, "&Terminal")
-
-        # terminal_menu_item1 = wx.MenuItem(terminal_menu, wx.ID_ANY, "&New Terminal", "To open a new terminal", wx.ITEM_NORMAL)
-        # terminal_menu.Append(terminal_menu_item1)
-
-        # terminal_menu_item2 = wx.MenuItem(terminal_menu, wx.ID_CLOSE, "&Close Terminal", "To close the terminal", wx.ITEM_NORMAL)
-        # terminal_menu.Append(terminal_menu_item2)
-
+        # # Setting up Console menu.
+        console_menu= wx.Menu()
+        menu_bar.Append(console_menu,"&Console")
+        console_menu_labels = ["&Clear\tCtrl+L", "&Close Console\tCtrl+K"]
+        console_menu_item_ids = [wx.ID_ANY, wx.ID_ANY]
+        console_menu_descs = ["To clear the console", "To close the console"]
+        console_menu_items = []
+        for id, label, desc in itertools.zip_longest(console_menu_item_ids, console_menu_labels, console_menu_descs):
+            console_menu_item = wx.MenuItem(console_menu, id, label, desc, wx.ITEM_NORMAL)
+            console_menu.Append(console_menu_item)  
+            console_menu_items.append(console_menu_item)
+        # Setting up event handlers for the console menu items.
+        console_menu_events = ['OnClear', 'OnCloseConsole']
+        for e, item in zip(console_menu_events, console_menu_items):
+            event = getattr(self, e)
+            self.Bind(wx.EVT_MENU, event, item)
         # Setting up Help menu.
         help_menu= wx.Menu()
         menu_bar.Append(help_menu,"&Help") # Adding the "help_menu" to the MenuBar
@@ -229,7 +235,7 @@ class MyFrame(wx.Frame):
         # Set Run menu item events.
         self.Bind(wx.EVT_MENU, self.OnRun, run_menu_items[0])
 
-        # # Set Terminal menu item events.
+        # # Set Console menu item events.
         # self.Bind(wx.EVT_MENU, self.OnNewTerminal, terminal_menu_item1)
         # self.Bind(wx.EVT_MENU, self.OnCloseTerminal, terminal_menu_item2)
        
@@ -262,6 +268,12 @@ class MyFrame(wx.Frame):
         except:
             pass
         RedirectText(self.log).write(f"$ {tool} {script} {' '.join(['-'+x.lower() for x in params])}\n")
+
+
+    # On clear console
+    def OnClear(self, event):
+        """ A method to clear the console"""
+        self.log.Clear()
 
     # Translate event handlers
     def OnTranslate(self, event):
@@ -405,17 +417,13 @@ class MyFrame(wx.Frame):
         """ A method to handle the select all event"""
         self.nb.GetCurrentPage().text.SelectAll()
 
-    # view menu item event handlers
-    # def OnZoomIn(self, event):
-    #     """ A method to handle the zoom in event"""
-    #     self.nb.GetCurrentPage().text.SetZoom(self.nb.GetCurrentPage().text.GetZoom()+1)
-
-    # def OnZoomOut(self, event):
-    #     """ A method to handle the zoom out event"""
-    #     self.nb.GetCurrentPage().text.SetZoom(self.nb.GetCurrentPage().text.GetZoom()-1)
-    # def OnResetZoom(self, event):
-    #     """ A method to handle the reset zoom event"""
-    #     self.nb.GetCurrentPage().text.SetZoom(0)
+    # Console menu item event handlers
+    def OnClearConsole(self, event):
+        """ A method to clear the console"""
+        self.log.Clear()
+    def OnCloseConsole(self, event):
+        """ A method to close the console"""
+        self.panel2.Destroy()
 
     # Help menu item event handlers
     def OnAbout(self, event):

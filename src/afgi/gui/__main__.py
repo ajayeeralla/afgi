@@ -4,9 +4,8 @@ Main module for AFGI GUI and entry point for the application.
 Example:
     $ python3 -m afgi.gui
 """
-
-
 def main():
+    """Main entry point for the application."""
     app = wx.App(False)
     frame = frame.MyFrame(None, "AFGI")
     app.MainLoop()

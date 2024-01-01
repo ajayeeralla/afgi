@@ -1,15 +1,27 @@
-
+#!/usr/bin/env python3
+# Path: src/afgi/yaml_to_tcl/apps/vcf/fpv.py
+""" This module is used to generate TCL file for VCF FPV appmode.
+"""
 import datetime
 from afgi.yaml_to_tcl.errors import YamlToTclErrorException, YamlToTclErrors
 from afgi.yaml_to_tcl.utils import Utils
 
 class FPV():
+    """ This class is used to generate TCL file for VCF FPV appmode.
+    Attributes:
+        dic (dict): Dictionary of the YAML file.
+        file (file): output TCL filename.
+    """
     def __init__(self, dic, file):
+        """ The constructor for FPV class.
+        """
         self.dic = dic
         self.output_file = file
         self.yaml_exception = YamlToTclErrors()
 
     def set_vars(self):
+        """ This method is used to set the VCF variables.
+        """
         vars = self.dic['vars']
         for var in vars:
             set_var = "set_app_var "+str(var)+" true\n"
@@ -17,6 +29,8 @@ class FPV():
         self.output_file.writelines("\n")
         
     def blackbox(self):
+        """ This method is used to set the blackbox modules and cells.
+        """
         blackboxes = ""
         if self.dic['blackbox'] != None:
             modules = self.dic['blackbox']['modules']
@@ -26,9 +40,16 @@ class FPV():
             cells = self.dic['blackbox']['cells']
             if cells != None:
                 blackboxes = blackboxes + "set_blackbox -cells "+str(tcl_fl.tcl_filelist())+"\n\n"           
+            if self.dic['blackbox']['report'] != None:
+                if self.dic['blackbox']['report'] == True:
+                    blackboxes = blackboxes + "report_blackbox\n\n"
+                elif self.dic['blackbox']['report'] == False:
+                    pass
         self.output_file.writelines(blackboxes) 
     
     def read_file(self):
+        """ This method is used to read and compile the RTL files.
+        """
         read_file = self.dic['read_file']
 
         if read_file == None:
@@ -55,6 +76,8 @@ class FPV():
         self.output_file.writelines(read_file)
     
     def clock(self):
+        """ This method is used to set the clock.
+        """
         clock = self.dic['clock']
 
         if clock == None:
@@ -74,6 +97,8 @@ class FPV():
         self.output_file.writelines(set_clock)
     
     def reset(self):
+        """ This method is used to set the reset.
+        """
         rst = self.dic['reset']
 
         if rst == None:

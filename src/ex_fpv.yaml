@@ -1,0 +1,46 @@
+
+# Task name
+task: This task is used to run Formal Verification on the design.
+
+# Tool name
+tool: VC-Formal
+
+# Application mode for the Formal tool
+appmode: FPV
+
+# Enable tool variables
+vars: 
+  - a
+  - b
+
+blackbox:
+  modules:
+    - add.v
+    - sub.v
+  cells:
+    - add0
+    - sub0
+  report: True  
+
+read_file:
+  top: adder
+  format: verilog
+  filelist: 
+    - adder.v
+    - adder_tb.v
+    - mult.v
+
+clock:
+  name: clk
+  period: 10
+
+reset: 
+  name: rst 
+  sense: high
+
+check-mode: block
+
+
+  
+
+
