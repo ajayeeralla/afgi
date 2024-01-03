@@ -53,4 +53,6 @@ class RunTool:
         # run tool
         # return os.system(self.tool + ' ' + self.get_opts() + ' ' + self.script)
         print (self.tool + ' ' + self.get_opts() + ' ' + self.script)
-        return os.popen(self.tool + ' ' + self.get_opts() + ' ' + self.script).read()
+        res = os.system(self.tool + ' ' + self.get_opts() + ' ' + self.script)
+        return res
+        # return os.popen(self.tool + ' ' + self.get_opts() + ' ' + self.script).read()
