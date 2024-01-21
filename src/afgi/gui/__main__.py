@@ -7,10 +7,10 @@ Example:
 def main():
     """Main entry point for the application."""
     app = wx.App(False)
-    frame = frame.MyFrame(None, "AFGI")
+    frame = myframe.MyFrame(None, "AFGI")
     app.MainLoop()
 
 if __name__ == "__main__":
-    from afgi.gui import frame
+    from afgi.gui import frame as myframe
     import wx
     main()
